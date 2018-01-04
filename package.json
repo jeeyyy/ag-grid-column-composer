@@ -1,8 +1,8 @@
 {
-    "name": "js-umd-lib-boilerplate",
+    "name": "ag-grid-column-composer",
     "version": "14.0.0",
     "description": "",
-    "main": "dist/js-umd-lib-boilerplate.js",
+    "main": "dist/ag-grid-column-composer.js",
     "types": "dist/index.d.ts",
     "files": [
         "dist"

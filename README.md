@@ -1,14 +1,14 @@
-# js-umd-lib-boilerplate
-A javascript module/ plugin/ library/ component building boilerplate.
+# ag-grid-column-composer
+A javascript module for composing various column configurations of ag-grid.
 
 ## Installation
 ```
-npm install --save js-umd-lib-boilerplate
+npm install --save ag-grid-column-composer
 ```
 
 Usage:
 ```js
-import * as myModule from '../dist/js-umd-lib-boilerplate';
+import * as myModule from '../dist/ag-grid-column-composer';
 myModule.Init();
 ```
 
