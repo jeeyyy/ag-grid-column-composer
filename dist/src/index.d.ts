@@ -1,2 +1,3 @@
 import "./index.pcss";
-export declare const Init: () => void;
+export { IColumnComposer } from "./interfaces";
+export { ColumnComposer } from './components/column-composer';

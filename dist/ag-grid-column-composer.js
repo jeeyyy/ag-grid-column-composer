@@ -81,26 +81,119 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.Init = undefined;
+exports.ColumnComposer = exports.IColumnComposer = undefined;
 
-__webpack_require__(1);
+var _interfaces = __webpack_require__(1);
 
-var _myModule = __webpack_require__(6);
+Object.defineProperty(exports, "IColumnComposer", {
+  enumerable: true,
+  get: function get() {
+    return _interfaces.IColumnComposer;
+  }
+});
 
-var Init = exports.Init = function Init() {
-    return new _myModule.MyModule().Init();
-};
+var _columnComposer = __webpack_require__(2);
+
+Object.defineProperty(exports, "ColumnComposer", {
+  enumerable: true,
+  get: function get() {
+    return _columnComposer.ColumnComposer;
+  }
+});
+
+__webpack_require__(3);
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var IColumnComposer = exports.IColumnComposer = undefined;
+(function (IColumnComposer) {
+    var ConfigType = void 0;
+    (function (ConfigType) {
+        ConfigType[ConfigType["ANGULAR"] = 0] = "ANGULAR";
+        ConfigType[ConfigType["AG_GRID"] = 1] = "AG_GRID";
+    })(ConfigType = IColumnComposer.ConfigType || (IColumnComposer.ConfigType = {}));
+})(IColumnComposer || (exports.IColumnComposer = IColumnComposer = {}));
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ColumnComposer = exports.ColumnComposer = function () {
+    function ColumnComposer(config) {
+        _classCallCheck(this, ColumnComposer);
+
+        var htmlElement = document.createElement('DIV');
+        htmlElement.innerHTML = '<section class="column-composer-container ' + (config && config.cls || '') + ' column-composer-container-hidden">\n            <div class="quick-filter-container">\n                <input\n                    type"text"    \n                    class="quick-filter"\n                    placeholder="Type here to seach"\n                />\n            </div>\n            <div class="column-list-container">\n                <ul class="column-list">\n                </ul>\n            </div>\n        <section>';
+        this.rootElement = htmlElement.firstChild;
+        this._initialise(config);
+        document.body.appendChild(this.rootElement);
+    }
+    // TODO: Should we use access identifiers
+
+
+    _createClass(ColumnComposer, [{
+        key: '_initialise',
+        value: function _initialise(config) {
+            var columns = config.columns.reduce(function (arr, column) {
+                return '<li class="column-config">\n                        ' + (column.headerName || column.field) + ' - ' + column.hide + ' - ' + (column.pinned || '') + '\n                    </li>';
+            }, []);
+            this.rootElement.querySelector('.column-list').appendChild(columns.join(''));
+            debugger;
+        }
+    }, {
+        key: 'open',
+        value: function open() {
+            this.rootElement.classList.remove('column-composer-container-hidden');
+        }
+    }, {
+        key: 'close',
+        value: function close() {
+            this.rootElement.classList.add('column-composer-container-hidden');
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh(config) {
+            this._initialise(config);
+        }
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            // TODO: Cleanup        
+        }
+    }]);
+
+    return ColumnComposer;
+}();
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(2);
+var content = __webpack_require__(4);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -108,7 +201,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(6)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -125,10 +218,10 @@ if(false) {
 }
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -139,7 +232,7 @@ exports.push([module.i, ":root {\r\n\r\n}", ""]);
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /*
@@ -221,7 +314,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -267,7 +360,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(5);
+var	fixUrls = __webpack_require__(7);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -580,7 +673,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 
@@ -673,36 +766,6 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MyModule = exports.MyModule = function () {
-    function MyModule() {
-        _classCallCheck(this, MyModule);
-    }
-
-    _createClass(MyModule, [{
-        key: "Init",
-        value: function Init() {
-            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        }
-    }]);
-
-    return MyModule;
-}();
 
 /***/ })
 /******/ ]);
