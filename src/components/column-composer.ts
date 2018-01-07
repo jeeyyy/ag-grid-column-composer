@@ -16,8 +16,6 @@ export class ColumnComposer {
                 />
             </div>
             <div class="column-list-container">
-                <ul class="column-list">
-                </ul>
             </div>
         <section>`;
         this.rootElement = htmlElement.firstChild as HTMLElement
@@ -27,13 +25,30 @@ export class ColumnComposer {
 
     // TODO: Should we use access identifiers
     _initialise(config: IColumnComposer.Configuration) {
-        const columns = config.columns.reduce((arr, column) => {
-            return `<li class="column-config">
-                        ${column.headerName || column.field} - ${column.hide} - ${column.pinned || '' }
-                    </li>`;
-        }, []);
-        this.rootElement.querySelector('.column-list').appendChild(columns.join(''));
-        debugger;
+        const existingList = this.rootElement.querySelector('.column-list');
+        const columnList: HTMLElement = document.createElement('UL');
+        columnList.classList.add('column-list');
+        config.columns.forEach((column) => {
+            columnList.appendChild(this._getColumnConfig(column));
+        });
+        if(existingList) {
+            this.rootElement.querySelector('.column-list-container').replaceChild(columnList, existingList);
+        } else {
+            this.rootElement.querySelector('.column-list-container').appendChild(columnList);
+        }
+        
+    }
+
+    _getColumnConfig(column: any): HTMLElement {
+        const element = document.createElement('LI');
+        element.classList.add('column-config');
+        element.innerHTML = 
+        `<span>${column.headerName}</span>
+        <span>${column.hide}</span>
+        <span>${column.pinned}</span>
+        <span>${column.field}</span>
+        `;
+        return element;
     }
 
     open() {

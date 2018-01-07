@@ -1,5 +1,6 @@
-import * as ColumnComposer from '../dist/ag-grid-column-composer.js';
-// import { IColumnComposer } from '../dist/src/index.d.ts';
+// import * as ColumnComposer from '../dist/ag-grid-column-composer.js';
+import { IColumnComposer } from '../src/index';
+import { ColumnComposer } from '../src/components/column-composer';
 
 const columns = [
     {
