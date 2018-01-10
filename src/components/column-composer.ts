@@ -3,19 +3,29 @@ import { IColumnComposer } from "../interfaces";
 export class ColumnComposer {
 
     private rootElement: HTMLElement;
-
+   // TODO: pass parent element when column config should be attached
     constructor(config: IColumnComposer.Configuration) {
         const htmlElement: HTMLElement = document.createElement('DIV');
         htmlElement.innerHTML = 
         `<section class="column-composer-container ${(config && config.cls) || ''} column-composer-container-hidden">
-            <div class="quick-filter-container">
-                <input
-                    type"text"    
-                    class="quick-filter"
-                    placeholder="Type here to seach"
-                />
+            <div class="hidden-column-list-container">
+                <div class="quick-filter-container">
+                    <input
+                        type"text"    
+                        class="quick-filter"
+                        placeholder="Type here to seach"
+                    />
+                </div>
             </div>
-            <div class="column-list-container">
+            <div class="visible-column-list-container">
+                <div class="quick-filter-container">
+                    <input
+                        type"text"    
+                        class="quick-filter"
+                        placeholder="Type here to seach"
+                    />
+                </div>
+                
             </div>
         <section>`;
         this.rootElement = htmlElement.firstChild as HTMLElement
@@ -26,27 +36,40 @@ export class ColumnComposer {
     // TODO: Should we use access identifiers
     _initialise(config: IColumnComposer.Configuration) {
         const existingList = this.rootElement.querySelector('.column-list');
-        const columnList: HTMLElement = document.createElement('UL');
-        columnList.classList.add('column-list');
+        const hiddenColumnList: HTMLElement = document.createElement('UL');
+        const visibleColumnList: HTMLElement = document.createElement('UL');
+        hiddenColumnList.classList.add('column-list');
+        visibleColumnList.classList.add('column-list');
         config.columns.forEach((column) => {
-            columnList.appendChild(this._getColumnConfig(column));
+            // TODO: User reduce to create 2 arrays and then process vs if else.
+
+            if(column.hide) {
+                hiddenColumnList.appendChild(this._getColumnConfig(column));
+            } else {
+                visibleColumnList.appendChild(this._getColumnConfig(column));
+            }
         });
+
         if(existingList) {
-            this.rootElement.querySelector('.column-list-container').replaceChild(columnList, existingList);
+            this.rootElement.querySelector('.hidden-column-list-container').replaceChild(hiddenColumnList, existingList);
+            this.rootElement.querySelector('.visible-column-list-container').replaceChild(visibleColumnList, existingList);
         } else {
-            this.rootElement.querySelector('.column-list-container').appendChild(columnList);
+            this.rootElement.querySelector('.hidden-column-list-container').appendChild(hiddenColumnList);
+            this.rootElement.querySelector('.visible-column-list-container').appendChild(visibleColumnList);
         }
         
     }
 
+    // TODO: THis should be another component
     _getColumnConfig(column: any): HTMLElement {
         const element = document.createElement('LI');
         element.classList.add('column-config');
         element.innerHTML = 
-        `<span>${column.headerName}</span>
-        <span>${column.hide}</span>
-        <span>${column.pinned}</span>
-        <span>${column.field}</span>
+        `
+            <div>${column.hide ? 'hidden': 'visible'}</div>
+            <div>${column.hide ? '' : column.pinned}</div>    
+            <div>${column.headerName ? column.headerName : column.field}</div>
+        
         `;
         return element;
     }

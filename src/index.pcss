@@ -1,3 +1,31 @@
 :root {
 
 }
+
+.column-composer-container{
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+    width: 100%;
+    .hidden-column-list-container {
+        order: 1;
+        width: 50%;
+        border-top: 1px black solid;
+        border-right: 1px solid black;
+    }
+    .visible-column-list-container {
+         order: 2;
+         width: 50%;
+         border-top: 1px black solid;
+    }
+    .column-list {
+        .column-config {
+            display: flex;
+            flex-direction: row;
+            /* TODO: Do we need this */
+            .config-row {
+                
+            }
+        }
+    }
+}

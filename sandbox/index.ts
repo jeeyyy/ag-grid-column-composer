@@ -1,6 +1,7 @@
 // import * as ColumnComposer from '../dist/ag-grid-column-composer.js';
+import './index.pcss';
 import { IColumnComposer } from '../src/index';
-import { ColumnComposer } from '../src/components/column-composer';
+import { ColumnComposer } from '../src/index';
 
 const columns = [
     {
@@ -33,10 +34,10 @@ const columns = [
 
 const config = {
     columns,
-    type: 1
+    type: 1,
+    cls: 'my-column-composer'
 }
 
 const columnComposer = new ColumnComposer(config);
-debugger;
 columnComposer.open();
 

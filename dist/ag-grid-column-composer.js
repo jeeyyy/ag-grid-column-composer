@@ -144,7 +144,7 @@ var ColumnComposer = exports.ColumnComposer = function () {
         _classCallCheck(this, ColumnComposer);
 
         var htmlElement = document.createElement('DIV');
-        htmlElement.innerHTML = '<section class="column-composer-container ' + (config && config.cls || '') + ' column-composer-container-hidden">\n            <div class="quick-filter-container">\n                <input\n                    type"text"    \n                    class="quick-filter"\n                    placeholder="Type here to seach"\n                />\n            </div>\n            <div class="column-list-container">\n                <ul class="column-list">\n                </ul>\n            </div>\n        <section>';
+        htmlElement.innerHTML = '<section class="column-composer-container ' + (config && config.cls || '') + ' column-composer-container-hidden">\n            <div class="hidden-column-list-container">\n                <div class="quick-filter-container">\n                    <input\n                        type"text"    \n                        class="quick-filter"\n                        placeholder="Type here to seach"\n                    />\n                </div>\n            </div>\n            <div class="visible-column-list-container">\n                <div class="quick-filter-container">\n                    <input\n                        type"text"    \n                        class="quick-filter"\n                        placeholder="Type here to seach"\n                    />\n                </div>\n                \n            </div>\n        <section>';
         this.rootElement = htmlElement.firstChild;
         this._initialise(config);
         document.body.appendChild(this.rootElement);
@@ -155,11 +155,36 @@ var ColumnComposer = exports.ColumnComposer = function () {
     _createClass(ColumnComposer, [{
         key: '_initialise',
         value: function _initialise(config) {
-            var columns = config.columns.reduce(function (arr, column) {
-                return '<li class="column-config">\n                        ' + (column.headerName || column.field) + ' - ' + column.hide + ' - ' + (column.pinned || '') + '\n                    </li>';
-            }, []);
-            this.rootElement.querySelector('.column-list').appendChild(columns.join(''));
-            debugger;
+            var _this = this;
+
+            var existingList = this.rootElement.querySelector('.column-list');
+            var hiddenColumnList = document.createElement('UL');
+            var visibleColumnList = document.createElement('UL');
+            hiddenColumnList.classList.add('column-list');
+            visibleColumnList.classList.add('column-list');
+            config.columns.forEach(function (column) {
+                // TODO: User reduce to create 2 arrays and then process vs if else.
+                if (column.hide) {
+                    hiddenColumnList.appendChild(_this._getColumnConfig(column));
+                } else {
+                    visibleColumnList.appendChild(_this._getColumnConfig(column));
+                }
+            });
+            if (existingList) {
+                this.rootElement.querySelector('.hidden-column-list-container').replaceChild(hiddenColumnList, existingList);
+                this.rootElement.querySelector('.visible-column-list-container').replaceChild(visibleColumnList, existingList);
+            } else {
+                this.rootElement.querySelector('.hidden-column-list-container').appendChild(hiddenColumnList);
+                this.rootElement.querySelector('.visible-column-list-container').appendChild(visibleColumnList);
+            }
+        }
+    }, {
+        key: '_getColumnConfig',
+        value: function _getColumnConfig(column) {
+            var element = document.createElement('LI');
+            element.classList.add('column-config');
+            element.innerHTML = '<span>' + column.headerName + '</span>\n        <span>' + column.hide + '</span>\n        <span>' + column.pinned + '</span>\n        <span>' + column.field + '</span>\n        ';
+            return element;
         }
     }, {
         key: 'open',
@@ -226,7 +251,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, ":root {\r\n\r\n}", ""]);
+exports.push([module.i, ":root {\r\n\r\n}\r\n\r\n.column-composer-container{\r\n     -webkit-box-orient: horizontal;\r\n     -webkit-box-direction: normal;\r\n             flex-direction: row;\r\n     padding: 1em;\r\n}\r\n\r\n.column-composer-container .hidden-column-list-container {\r\n         -webkit-box-ordinal-group: 2;\r\n                 order: 1;\r\n         border-top: 1px black solid;\r\n         border-right: 1px solid black;\r\n     }\r\n\r\n.column-composer-container .visible-column-list-container {\r\n         -webkit-box-ordinal-group: 3;\r\n                 order: 2;\r\n         border-top: 1px black solid;\r\n     }", ""]);
 
 // exports
 
