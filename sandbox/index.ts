@@ -32,10 +32,10 @@ const columns = [
 }
  */
 
-const config = {
+const config: IColumnComposer.Configuration = {
     columns,
     type: 1,
-    cls: 'my-column-composer'
+    parentId: 'config-container'
 }
 
 const columnComposer = new ColumnComposer(config);

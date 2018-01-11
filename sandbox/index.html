@@ -15,14 +15,32 @@
             body {
                 margin: 0;
                 padding: 0;
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                height: 100%;
+                width: 100%;
                 box-sizing: border-box;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
                 font-size: 11px;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1;
+            }
+
+            #config-container {
+                margin: 10em;
+                background:white;
+                color: black;
+                z-index: 4;
+                height: 400px;
+                width: 600px;
             }
         </style>
     </head>
 
     <body>
+        <div id="config-container"></div>
+
     </body>
 
 </html>

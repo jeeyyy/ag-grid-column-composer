@@ -30,7 +30,8 @@ export class ColumnComposer {
         <section>`;
         this.rootElement = htmlElement.firstChild as HTMLElement
         this._initialise(config);
-        document.body.appendChild(this.rootElement)
+        const parent = config.parentId ? document.body.querySelector(`#${config.parentId}`) : document.body;
+        parent.appendChild(this.rootElement)
     }
 
     // TODO: Should we use access identifiers

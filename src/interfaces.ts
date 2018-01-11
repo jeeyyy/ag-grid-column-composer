@@ -10,7 +10,8 @@ export namespace IColumnComposer {
     export interface Configuration {
         type: ConfigType,
         columns: columnDefinitions[] 
-        cls?: string
+        cls?: string,
+        parentId: string
     }
 
 }
