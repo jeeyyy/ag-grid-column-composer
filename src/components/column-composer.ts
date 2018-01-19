@@ -10,6 +10,9 @@ export class ColumnComposer {
         `<section class="column-composer-container ${(config && config.cls) || ''} column-composer-container-hidden">
             <div class="hidden-column-list-container">
                 <div class="quick-filter-container">
+                    <div class="h3 bold caps">
+                        Hidden Columns
+                    </div>
                     <input
                         type"text"    
                         class="quick-filter"
@@ -19,6 +22,9 @@ export class ColumnComposer {
             </div>
             <div class="visible-column-list-container">
                 <div class="quick-filter-container">
+                    <div class="h3 bold caps">
+                        Visible Columns
+                    </div>
                     <input
                         type"text"    
                         class="quick-filter"

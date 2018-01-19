@@ -13,15 +13,20 @@
         width: 50%;
         border-top: 1px black solid;
         border-right: 1px solid black;
+        padding: 0.5em 1em;
     }
     .visible-column-list-container {
          order: 2;
          width: 50%;
          border-top: 1px black solid;
+         padding: 0.5em 1em;
     }
     .column-list {
+        list-stype-type: none;
+        padding: 0;
         .column-config {
             display: flex;
+            list-style-type: none;
             flex-direction: row;
             /* TODO: Do we need this */
             .config-row {
@@ -29,4 +34,32 @@
             }
         }
     }
+}
+
+/* TODO: Write Code to generate these classes */
+.h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.h3 {
+    display: block;
+    font-size: 1.25em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.caps {
+    text-transform: uppercase;
+}
+
+.bold {
+    font-weight: bold;
 }
