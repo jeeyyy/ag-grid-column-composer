@@ -1,5 +1,5 @@
 :root {
-
+    
 }
 
 .column-composer-container{
@@ -62,4 +62,36 @@
 
 .bold {
     font-weight: bold;
+}
+
+
+.eye {
+    margin: 0.125em 0.25em;
+    width: .75em;
+    height: .75em;
+    border: solid 1px #555;
+    border-radius:  75% 15%;
+    position: relative;
+    transform: rotate(45deg);
+    background-color: #555;
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 0.25em;
+        height: 0.25em;
+        border: solid 1px #fff;
+        background-color: #555;
+        border-radius: 60%;
+        left: 1.5px;
+        top: 1.5px;
+    }
+}
+
+.active {
+    opacity: 1;
+}
+
+.disabled {
+    opacity: 0.3;
 }

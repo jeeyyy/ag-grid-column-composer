@@ -40,8 +40,23 @@ export class ColumnComposer {
         parent.appendChild(this.rootElement)
     }
 
-    // TODO: Should we use access identifiers
-    _initialise(config: IColumnComposer.Configuration) {
+    open() {
+        this.rootElement.classList.remove('column-composer-container-hidden')
+    }
+
+    close() {
+        this.rootElement.classList.add('column-composer-container-hidden')
+    }
+
+    refresh(config: IColumnComposer.Configuration) {
+        this._initialise(config);
+    }
+
+    destroy() {
+        // TODO: Cleanup        
+    }
+
+    private _initialise(config: IColumnComposer.Configuration) {
         const existingList = this.rootElement.querySelector('.column-list');
         const hiddenColumnList: HTMLElement = document.createElement('UL');
         const visibleColumnList: HTMLElement = document.createElement('UL');
@@ -68,33 +83,17 @@ export class ColumnComposer {
     }
 
     // TODO: THis should be another component
-    _getColumnConfig(column: any): HTMLElement {
+    private _getColumnConfig(column: any): HTMLElement {
         const element = document.createElement('LI');
         element.classList.add('column-config');
         element.innerHTML = 
         `
-            <div>${column.hide ? 'hidden': 'visible'}</div>
+            <div class= "eye ${column.hide ? 'disabled' : 'active'}"></div>
             <div>${column.hide ? '' : column.pinned}</div>    
             <div>${column.headerName ? column.headerName : column.field}</div>
         
         `;
         return element;
-    }
-
-    open() {
-        this.rootElement.classList.remove('column-composer-container-hidden')
-    }
-
-    close() {
-        this.rootElement.classList.add('column-composer-container-hidden')
-    }
-
-    refresh(config: IColumnComposer.Configuration) {
-        this._initialise(config);
-    }
-
-    destroy() {
-        // TODO: Cleanup        
     }
 
   }
