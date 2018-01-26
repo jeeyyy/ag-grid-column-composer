@@ -5,13 +5,14 @@ export namespace IColumnComposer {
     }
 
     // TODO: This should accept Angular or AG Grid Column configs. Should we add libraries or types as dev dependencies?
-    export type columnDefinitions = any;
+    export type ColumnDefinitions = any;
 
     export interface Configuration {
         type: ConfigType,
-        columns: columnDefinitions[] 
+        columns: ColumnDefinitions[] 
         cls?: string,
-        parentId: string
+        parentId: string,
+        configUpdated: Function
     }
 
 }

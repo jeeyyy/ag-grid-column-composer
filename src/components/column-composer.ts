@@ -3,6 +3,9 @@ import { IColumnComposer } from "../interfaces";
 export class ColumnComposer {
 
     private rootElement: HTMLElement;
+    private columns: IColumnComposer.ColumnDefinitions[];
+    private configUpdated: Function;
+
    // TODO: pass parent element when column config should be attached
     constructor(config: IColumnComposer.Configuration) {
         const htmlElement: HTMLElement = document.createElement('DIV');
@@ -35,8 +38,14 @@ export class ColumnComposer {
             </div>
         <section>`;
         this.rootElement = htmlElement.firstChild as HTMLElement
+        const parent = config.parentId && document.body.querySelector(`#${config.parentId}`);
+        if(!parent) {
+            if(console) {
+                console.error(`Invalid configuration passed, cannot find parent container for column configuration.`);
+            }
+        }
+        this.columns = config.columns;
         this._initialise(config);
-        const parent = config.parentId ? document.body.querySelector(`#${config.parentId}`) : document.body;
         parent.appendChild(this.rootElement)
     }
 
@@ -88,12 +97,26 @@ export class ColumnComposer {
         element.classList.add('column-config');
         element.innerHTML = 
         `
-            <div class= "eye ${column.hide ? 'disabled' : 'active'}"></div>
-            <div>${column.hide ? '' : column.pinned}</div>    
+            ${column.hide 
+                ? '<div id="show-column" class="plus-circle"></div>'
+                : '<div id="hide-column" class="cross-circle"></div>'
+            }
+            <div class="pin-icon">
+                <div class="pinned-menu">
+                    <div id="pin-left" class="pb025 hover-accent ng-binding" ng-click="col.colDef.pinned = col.colDef.pinned !== 'left' ? 'left' : ''">
+                        Pin Left
+                    </div>
+                    <div id="pin-right" class="hover-accent ng-binding" ng-click="col.colDef.pinned = col.colDef.pinned !== 'right' ? 'right' : ''">
+                        Pin Right
+                    </div>
+                </div>
+                <div class="${column.hide ? '' : 'eye'}">
+                </div>
+            </div>    
             <div>${column.headerName ? column.headerName : column.field}</div>
         
         `;
         return element;
     }
 
-  }
+}

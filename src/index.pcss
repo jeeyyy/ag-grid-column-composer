@@ -66,9 +66,9 @@
 
 
 .eye {
-    margin: 0.125em 0.25em;
-    width: .75em;
-    height: .75em;
+    margin: 0.25em;
+    width: .5em;
+    height: .5em;
     border: solid 1px #555;
     border-radius:  75% 15%;
     position: relative;
@@ -83,8 +83,129 @@
         border: solid 1px #fff;
         background-color: #555;
         border-radius: 60%;
-        left: 1.5px;
-        top: 1.5px;
+        left: 0;
+        top: 0;
+    }
+}
+
+.cross {
+    margin: 0.25em;
+    background: #555;
+    width: 0.25em;
+    height: 1em;
+    position: relative;
+    transform: rotate(45deg);
+
+    &:after {
+        background: #555;
+        content: "";
+        height: 1em;
+        left: 0em;
+        position: absolute;
+        top: 0em;
+        width: 0.25em;
+        transform: rotate(90deg);
+    }
+}
+
+.cross-circle {
+    margin: 0.25em;
+    background: #555;
+    width: 1em;
+    height: 1em;
+	border-radius: 0.5em;
+    position: relative;
+    &:before {
+        background: #fff;
+        content: '';
+        width: 0.2em;
+        height: 0.8em;
+        top: 0.1em;
+        left: 0.3em;
+        position: absolute;
+        transform: rotate(45deg);
+    }
+    &:after {
+        background: #fff;
+        content: '';
+        width: 0.2em;
+        height: 0.8em;
+        top: 0.1em;
+        left: 0.3em;
+        position: absolute;
+        transform: rotate(-45deg);
+    }
+}
+
+.plus-circle {
+    margin: 0.25em;
+    background: #555;
+    width: 1em;
+    height: 1em;
+	border-radius: 0.5em;
+    position: relative;
+    &:before {
+        background: #fff;
+        content: '';
+        width: 0.2em;
+        height: 0.8em;
+        top: 0.1em;
+        left: 0.4em;
+        position: absolute;
+    }
+    &:after {
+        background: #fff;
+        content: '';
+        width: 0.2em;
+        height: 0.8em;
+        top: 0.1em;
+        left: 0.4em;
+        position: absolute;
+        transform: rotate(90deg);
+    }
+}
+
+.pinned-menu {
+    &:after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-bottom: 5px solid transparent;
+        border-top: 5px solid transparent;
+        border-right: 5px solid black;
+        display: none;
+        position: absolute;
+        left: -5px;
+        top: 15px;
+        bottom: auto;
+    }
+    margin: 0.25px;
+    color: #fff;
+    background-color: #000;
+    z-index: 1;
+    min-width: 65px;
+    padding: 0.5em;
+    display: none;
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    bottom: auto;
+    &:hover {
+        display: block;
+    }
+}
+
+.pin-icon {
+    display: inline-block;
+    position: relative;
+    float: left;
+    &:hover {
+        .pinned-menu {
+            display: block;
+            &:after {
+                display: block;
+            }
+        }
     }
 }
 

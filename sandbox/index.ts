@@ -32,10 +32,15 @@ const columns = [
 }
  */
 
+const handleConfigUpdate = (newConfig) => {
+    console.log(`config Updated: ${newConfig}`);
+};
+
 const config: IColumnComposer.Configuration = {
     columns,
     type: 1,
-    parentId: 'config-container'
+    parentId: 'config-container',
+    configUpdated: handleConfigUpdate
 }
 
 const columnComposer = new ColumnComposer(config);
