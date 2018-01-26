@@ -3,8 +3,12 @@ import { IColumnComposer } from "../interfaces";
 export class ColumnComposer {
 
     private rootElement: HTMLElement;
-    private columns: IColumnComposer.ColumnDefinitions[];
+    private columns: IColumnComposer.ColumnDefinition[];
     private configUpdated: Function;
+
+    private _handleColumnPin = function($event) {
+        this.onColumnPin($event);
+    }.bind(this);
 
    // TODO: pass parent element when column config should be attached
     constructor(config: IColumnComposer.Configuration) {
@@ -46,7 +50,7 @@ export class ColumnComposer {
         }
         this.columns = config.columns;
         this._initialise(config);
-        parent.appendChild(this.rootElement)
+        parent.appendChild(this.rootElement);
     }
 
     open() {
@@ -65,8 +69,14 @@ export class ColumnComposer {
         // TODO: Cleanup        
     }
 
+    onColumnPin($event) {
+        debugger;
+        console.log($event);
+        // this.columns.filter(column => (id === `${column.field}-pin-left`) || (id === `${column.field}-pin-right`) )
+    }
+
     private _initialise(config: IColumnComposer.Configuration) {
-        const existingList = this.rootElement.querySelector('.column-list');
+        const existingLists = [this.rootElement.querySelector('.hidden-column-list-container>.column-list'), this.rootElement.querySelector('.visible-column-list-container>.column-list')];
         const hiddenColumnList: HTMLElement = document.createElement('UL');
         const visibleColumnList: HTMLElement = document.createElement('UL');
         hiddenColumnList.classList.add('column-list');
@@ -81,18 +91,36 @@ export class ColumnComposer {
             }
         });
 
-        if(existingList) {
-            this.rootElement.querySelector('.hidden-column-list-container').replaceChild(hiddenColumnList, existingList);
-            this.rootElement.querySelector('.visible-column-list-container').replaceChild(visibleColumnList, existingList);
+        if(existingLists[0]) {
+            this.rootElement.querySelector('.hidden-column-list-container').replaceChild(hiddenColumnList, existingLists[0]);
         } else {
             this.rootElement.querySelector('.hidden-column-list-container').appendChild(hiddenColumnList);
+        }
+        if(existingLists[1]) {
+            this.rootElement.querySelector('.visible-column-list-container').replaceChild(visibleColumnList, existingLists[1]);
+            this._removeEvents(existingLists[1]);
+        } else {
             this.rootElement.querySelector('.visible-column-list-container').appendChild(visibleColumnList);
         }
-        
+        this._addEvents(visibleColumnList);
+    }
+
+    private _addEvents(columnList: Element) {
+        const columns: any = columnList.querySelectorAll('.column-config');
+        columns.forEach((column: Element) => {
+            column.addEventListener('click', this._handleColumnPin);
+        });
+    }
+
+    private _removeEvents(columnList: Element) {
+        const columns: any = columnList.querySelectorAll('.column-config');
+        columns.forEach((element: Element) => {
+            element.removeEventListener('click', this._handleColumnPin);
+        });
     }
 
     // TODO: THis should be another component
-    private _getColumnConfig(column: any): HTMLElement {
+    private _getColumnConfig(column: IColumnComposer.ColumnDefinition): HTMLElement {
         const element = document.createElement('LI');
         element.classList.add('column-config');
         element.innerHTML = 
@@ -103,10 +131,10 @@ export class ColumnComposer {
             }
             <div class="pin-icon">
                 <div class="pinned-menu">
-                    <div id="pin-left" class="pb025 hover-accent ng-binding" ng-click="col.colDef.pinned = col.colDef.pinned !== 'left' ? 'left' : ''">
+                    <div id="${column.field}-pin-left" class="">
                         Pin Left
                     </div>
-                    <div id="pin-right" class="hover-accent ng-binding" ng-click="col.colDef.pinned = col.colDef.pinned !== 'right' ? 'right' : ''">
+                    <div id="pin-right" class="">
                         Pin Right
                     </div>
                 </div>
@@ -114,9 +142,12 @@ export class ColumnComposer {
                 </div>
             </div>    
             <div>${column.headerName ? column.headerName : column.field}</div>
-        
         `;
         return element;
     }
 
+    private _pincolumn(column: IColumnComposer.ColumnDefinition, direction: string) {
+        column.pinned = column.pinned !== direction ? direction : '';
+    }
+    
 }
