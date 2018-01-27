@@ -12,7 +12,7 @@ export namespace IColumnComposer {
         columns: ColumnDefinition[] 
         cls?: string,
         parentId: string,
-        configUpdated: Function
+        onConfigUpdate: Function
     }
 
 }
