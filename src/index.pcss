@@ -1,42 +1,82 @@
 :root {
-    
+    --accent: green;
 }
 
 .column-composer-container{
     display: flex;
-    flex-direction: row;
-    padding: 4em 0em 0em 0em;
+    flex-direction: column;
+    padding: 0em;
     margin: 0;
     width: 100%;
-    .hidden-column-list-container {
-        order: 1;
-        width: 50%;
-        border-top: 1px black solid;
-        border-right: 1px solid black;
-        padding: 0.5em 1em;
+    height: 100%;
+    &.column-composer-container-hidden {
+        display: none;    
     }
-    .visible-column-list-container {
-         order: 2;
-         width: 50%;
-         border-top: 1px black solid;
-         padding: 0.5em 1em;
+    .title-bar {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .title {
+            flex-grow: 1;
+            padding: 0em 0.5em;
+        }
+        .actions {
+            padding: 0em 0.5em;
+        }
     }
-    .column-list {
-        list-stype-type: none;
-        padding: 0;
-        .column-config {
-            display: flex;
-            list-style-type: none;
-            flex-direction: row;
-            /* TODO: Do we need this */
-            .config-row {
-                
+    .body {
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        .hidden-column-list-container {
+            order: 1;
+            width: 50%;
+            border-top: 1px black solid;
+            border-right: 1px solid black;
+            padding: 0.5em 1em;
+        }
+        .visible-column-list-container {
+            order: 2;
+            width: 50%;
+            border-top: 1px black solid;
+            padding: 0.5em 1em;
+        }
+        .column-list {
+            list-stype-type: none;
+            padding: 0;
+            .column-config {
+                display: flex;
+                list-style-type: none;
+                flex-direction: row;
+                /* TODO: Do we need this */
+                .config-row {
+                    
+                }
+            }
+        }
+        .quick-filter-container {
+            width: 100%;
+            .quick-filter {
+                width: 100%;
             }
         }
     }
+    
 }
 
 /* TODO: Write Code to generate these classes */
+.h1 {
+    display: block;
+    font-size: 1.75em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
 .h2 {
     display: block;
     font-size: 1.5em;
@@ -56,8 +96,12 @@
     margin-right: 0;
 }
 
-.caps {
+.all-caps {
     text-transform: uppercase;
+}
+
+.caps {
+    text-transform: capitalize;
 }
 
 .bold {
@@ -184,12 +228,11 @@
     background-color: #000;
     z-index: 1;
     min-width: 65px;
-    padding: 0.5em;
     display: none;
     position: absolute;
+    cursor: 'pointer';
     top: -15px;
     left: 20px;
-    bottom: auto;
     &:hover {
         display: block;
     }
@@ -202,8 +245,22 @@
     &:hover {
         .pinned-menu {
             display: block;
+            
             &:after {
                 display: block;
+            }
+            .pin-button {
+                cursor: pointer;
+                padding: 0.5em;
+                &.active {
+                    color: green;
+                }
+                &:first-child {
+                    border-bottom: 1px solid #555;
+                }
+                &:last-child {
+                    border-top: 1px solid #fff;
+                }
             }
         }
     }

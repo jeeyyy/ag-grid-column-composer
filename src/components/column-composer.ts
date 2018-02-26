@@ -23,32 +23,42 @@ export class ColumnComposer {
         const htmlElement: HTMLElement = document.createElement('DIV');
         htmlElement.innerHTML =
             `<section class="column-composer-container ${(config && config.cls) || ''} column-composer-container-hidden">
-            <div class="hidden-column-list-container">
-                <div class="quick-filter-container">
-                    <div class="h3 bold caps">
-                        Hidden Columns
+                <section class="title-bar">
+                    <div class="title h1 all-caps">
+                        ${config.title ? config.title : 'column configuration'}
                     </div>
-                    <input
-                        type"text"    
-                        class="quick-filter"
-                        placeholder="Type here to seach"
-                    />
-                </div>
-            </div>
-            <div class="visible-column-list-container">
-                <div class="quick-filter-container">
-                    <div class="h3 bold caps">
-                        Visible Columns
+                    <div class="actions">
+                        <input class="primary-btn" type="button" value="Save" />
+                        <input type="button" value="Cancel"/>
                     </div>
-                    <input
-                        type"text"    
-                        class="quick-filter"
-                        placeholder="Type here to seach"
-                    />
-                </div>
-                
-            </div>
-        <section>`;
+                </section>
+                <section class="body">
+                    <div class="hidden-column-list-container">
+                        <div class="h3 bold caps">
+                            Hidden Columns
+                        </div>
+                        <div class="quick-filter-container">
+                            <input
+                                type"text"    
+                                class="quick-filter"
+                                placeholder="Search..."
+                            />
+                        </div>
+                    </div>
+                    <div class="visible-column-list-container">
+                        <div class="h3 bold caps">
+                            Visible Columns
+                        </div>
+                        <div class="quick-filter-container">
+                            <input
+                                type"text"    
+                                class="quick-filter"
+                                placeholder="Search..."
+                            />
+                        </div>
+                    </div>
+                </section>
+            <section>`;
         this.rootElement = htmlElement.firstChild as HTMLElement;
         this.onConfigUpdate = config.onConfigUpdate;
         this._initialise(config.columns);
@@ -169,7 +179,6 @@ export class ColumnComposer {
     }
     private _getColIndex(column) {
         const sortedList = this._getSortedListByType(this.columns, column.hide);
-        
         sortedList.forEach((element, index )=> {
             return element.field === column.field;
         })
@@ -184,8 +193,6 @@ export class ColumnComposer {
         this.columns
             .filter(column => ($event.srcElement.id === `${column.field}-pin-left`) || ($event.srcElement.id === `${column.field}-pin-right`))
             .forEach(column => column.pinned = direction);
-        // TODO: Return Clone?
-        this.onConfigUpdate(this.columns);
     }
 
     // TODO: addToVisibleColumns and addToHiddenColumns can be merged to single function
@@ -200,12 +207,12 @@ export class ColumnComposer {
         configElement.parentNode.removeChild(configElement);
         if (column) {
             column.hide = false;
-            column.displayOrder = this.columns.filter(column => !column.hide).length;
             const colConfig = this._getColumnConfig(column);
-            this.rootElement.querySelector('.visible-column-list-container .column-list').appendChild(colConfig);
+            const insertIndex = this._getInsertIndex(column, this.columns);
+            const configs: NodeListOf<Element> = this.rootElement.querySelectorAll('.visible-column-list-container .column-list .column-config');
+            this.rootElement.querySelector('.visible-column-list-container .column-list').insertBefore(colConfig, configs[insertIndex]);
             this._addEvents(colConfig, false);
         }
-        this.onConfigUpdate(this.columns);
     }
 
     private addToHiddenColumns($event) {
@@ -217,10 +224,30 @@ export class ColumnComposer {
         if (column) {
             column.hide = true;
             const colConfig = this._getColumnConfig(column);
-            this.rootElement.querySelector('.hidden-column-list-container .column-list').appendChild(colConfig);
+            const insertIndex = this._getInsertIndex(column, this.columns);
+            const configs: NodeListOf<Element> = this.rootElement.querySelectorAll('.hidden-column-list-container .column-list .column-config');
+            this.rootElement.querySelector('.hidden-column-list-container .column-list').insertBefore(colConfig, configs[insertIndex]);
             this._addEvents(colConfig, true);
         }
+    }
+
+    private onSave() {
+        // TODO: Return clone?
         this.onConfigUpdate(this.columns);
+    }
+
+    private _getInsertIndex(column: IColumnComposer.ColumnDefinition, columns: IColumnComposer.ColumnDefinition[]) {
+        let index = -1;
+        const isHidden: boolean = column.hide;
+        const sortedArr: IColumnComposer.ColumnDefinition[] = this._getSortedListByType(columns, isHidden);
+        // TODO: fallback to classic for loop as none of fancy es6 functions worked.
+        for(let i = 0; i < sortedArr.length; i ++) {
+            if(sortedArr[i].field === column.field) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     // TODO: THis should be another component
@@ -236,17 +263,17 @@ export class ColumnComposer {
             }
             <div class="pin-icon">
                 <div class="pinned-menu">
-                    <div id="${column.field}-pin-left" class="pin-button">
+                    <div id="${column.field}-pin-left" class="pin-button ${column.pinned === 'left' ? 'active': ''}">
                         Pin Left
                     </div>
-                    <div id="${column.field}-pin-right" class="pin-button">
+                    <div id="${column.field}-pin-right" class="pin-button ${column.pinned === 'right' ? 'active': ''}">
                         Pin Right
                     </div>
                 </div>
                 <div class="${column.hide ? '' : 'eye'}">
                 </div>
             </div>    
-            <div>${column.headerName ? column.headerName : column.field}</div>
+            <div>${column.headerName ? column.headerName : column.field} ##${column.displayOrder}</div>
         `;
         return element;
     }

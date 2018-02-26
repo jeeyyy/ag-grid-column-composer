@@ -11,6 +11,7 @@ export namespace IColumnComposer {
         type: ConfigType,
         columns: ColumnDefinition[] 
         cls?: string,
+        title?: string,
         parentId: string,
         onConfigUpdate: Function
     }
